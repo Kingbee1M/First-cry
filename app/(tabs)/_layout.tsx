@@ -13,6 +13,13 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarItemStyle: {
+            borderTopWidth: 2,
+            borderTopColor: '#F8991E',
+          },
+        tabBarStyle: {
+          backgroundColor: Colors[colorScheme ?? 'light'].background,
+        },
         headerShown: false,
         tabBarButton: HapticTab,
       }}>
@@ -20,14 +27,35 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol lib='Feather' size={28} name="home" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="cart"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Cart',
+          tabBarIcon: ({ color }) => <IconSymbol lib='Feather' size={28} name="shopping-cart" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="parenting"
+        options={{
+          title: 'Parenting',
+          tabBarIcon: ({ color }) => <IconSymbol lib='Ionicons' size={28} name="people-outline" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="wishlist"
+        options={{
+          title: 'Wishlist',
+          tabBarIcon: ({ color }) => <IconSymbol lib='Feather' size={28} name="heart" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: 'Account',
+          tabBarIcon: ({ color }) => <IconSymbol lib='Feather' size={28} name="user" color={color} />,
         }}
       />
     </Tabs>

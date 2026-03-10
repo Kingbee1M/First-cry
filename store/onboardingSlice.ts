@@ -1,16 +1,17 @@
+// onboardingSlice.ts
 import { createSlice } from "@reduxjs/toolkit";
 
 const onboardingSlice = createSlice({
   name: "onboarding",
   initialState: {
-    completed: false,
+    hasSeen: false, // default value; will be overwritten from AsyncStorage on app start
   },
   reducers: {
-    finishOnboarding: (state) => {
-      state.completed = true;
+    setHasSeen: (state, action) => {
+      state.hasSeen = action.payload; // true or false
     },
   },
 });
 
-export const { finishOnboarding } = onboardingSlice.actions;
+export const { setHasSeen } = onboardingSlice.actions;
 export default onboardingSlice.reducer;

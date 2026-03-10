@@ -1,68 +1,47 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
+// RootLayout.tsx
+import { setHasSeen } from "@/store/onboardingSlice";
+import { store } from "@/store/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect } from "react";
-import { Provider, useDispatch, useSelector } from "react-redux";
-
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import { finishOnboarding } from "@/store/onboardingSlice";
-import { RootState, store } from "@/store/store";
-import { Montserrat_400Regular, Montserrat_400Regular_Italic, Montserrat_500Medium, Montserrat_700Bold, Montserrat_800ExtraBold_Italic, useFonts } from "@expo-google-fonts/montserrat";
-
-
-
+import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { Provider, useDispatch } from "react-redux";
 
 function AppContent() {
-  const dispatch = useDispatch();
-  const completed = useSelector((state: RootState) => state.onboarding.completed);
   
+  const dispatch = useDispatch();
+  const [checked, setChecked] = useState(false);
+  const [hasSeen, setHasSeenState] = useState(false);
 
   useEffect(() => {
-    const checkOnboarding = async () => {
-      const value = await AsyncStorage.getItem("onboardingCompleted");
-
-      if (value === "true") {
-        dispatch(finishOnboarding());
-      }
+    const loadOnboardingState = async () => {
+      const value = await AsyncStorage.getItem("hasSeenOnboarding");
+      const seen = value === "true";
+      
+      dispatch(setHasSeen(seen));  // update Redux state
+      setHasSeenState(seen);       // update local state for layout decision
+      setChecked(true);
     };
 
-    checkOnboarding();
-  }, []);
+    loadOnboardingState();
+  }, [dispatch]);
 
-  
+  if (!checked) return null; // wait until AsyncStorage is read
 
   return (
-    <Stack initialRouteName={completed ? "(tabs)" : "onboarding/index"}>
-      <Stack.Screen name="onboarding/index" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{ presentation: "modal", title: "Modal" }} />
+    <Stack>
+      {!hasSeen ? (
+        <Stack.Screen name="onboarding/index" options={{ headerShown: false }} />
+      ) : (
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      )}
     </Stack>
   );
 }
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-    const [fontsLoaded] = useFonts({
-    Montserrat_400Regular,
-    Montserrat_400Regular_Italic,
-    Montserrat_700Bold,
-    Montserrat_800ExtraBold_Italic,
-    Montserrat_500Medium
-  });
-
-    if (!fontsLoaded) {
-    return null
-  }
-
   return (
     <Provider store={store}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <AppContent />
-        <StatusBar style="auto" />
-      </ThemeProvider>
+      <AppContent />
     </Provider>
   );
 }

@@ -10,9 +10,9 @@ export default function Screen1({ next }: Props) {
      const colorScheme = useColorScheme()
     return (
         <View style={{flex: 1, backgroundColor: 'orange', alignItems: 'center',}}>
-            <Image source={require('../../../assets/images/babygirl.png')} style={{flex: 2/3}}  />
+            <Image source={require('../../../assets/images/babygirl.png')} style={{flex: 1, width: '100%'}} />
             
-            <View  style={{width: '100%', flex: 1/3, backgroundColor: colorScheme === "dark" ? Colors.dark.background : Colors.light.background, borderTopRightRadius: 20, borderTopLeftRadius: 20, gap: 20, alignItems: 'center'}}>
+            <View  style={{width: '100%', flex: 2/3, backgroundColor: colorScheme === "dark" ? Colors.dark.background : Colors.light.background, borderTopRightRadius: 20, borderTopLeftRadius: 20, gap: 20, alignItems: 'center'}}>
                 <Text style={{color:  colorScheme === "dark" ? Colors.dark.text : Colors.light.text, marginTop: 20, fontSize: 26, fontFamily:'Montserrat_500Medium'}}>Tailored for Your Little Ones</Text>
                 <Text style={{color:  colorScheme === "dark" ? Colors.dark.text : Colors.light.text, width: '90%', textAlign: 'center', fontSize: 16, fontFamily:'Montserrat_500Medium',}}>Our curated collection is designed to cater to the diverse needs of your little ones, ensuring they get the very best.</Text>
                 
