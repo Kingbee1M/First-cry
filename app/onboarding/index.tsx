@@ -3,7 +3,7 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 import React, { useRef, useState } from "react";
 import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
-import { setHasSeen } from "../../store/onboardingSlice";
+import { setHasSeen } from "../../shared/store/onboardingSlice";
 import ScreenFour from "./screens/screenFour";
 import ScreenOne from "./screens/screenOne";
 import ScreenThree from "./screens/screenThree";
@@ -30,12 +30,10 @@ export default function OnboardingScreen({
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
 
-  // ✅ Update AsyncStorage and Redux when onboarding finishes
   const completeOnboarding = async () => {
-    await AsyncStorage.setItem("hasSeenOnboarding", "true"); // new key
+    await AsyncStorage.setItem("hasSeenOnboarding", "true");
     dispatch(setHasSeen(true));
 
-    // Navigate to main app (replace so user can't go back)
     navigation.replace("(tabs)");
   };
 

@@ -15,14 +15,14 @@ export default function ScreenTwo({ next }: Props) {
                     
                     <View  style={{width: '100%', flex: 2/3, backgroundColor: colorScheme === "dark" ? Colors.dark.background : Colors.light.background, borderTopRightRadius: 20, borderTopLeftRadius: 20, gap: 20, alignItems: 'center'}}>
                         <Text style={{color:  colorScheme === "dark" ? Colors.dark.text : Colors.light.text, marginTop: 20, fontSize: 26, fontFamily:'Montserrat_500Medium'}}>Exclusive Offers, Just for You</Text>
-                        <Text style={{color:  colorScheme === "dark" ? Colors.dark.text : Colors.light.text, width: '90%', textAlign: 'center', fontSize: 16, fontFamily:'Montserrat_500Medium',}}>Enjoy exclusive discounts, access to new arrivals, and personalized recommendations. Sign up today to unlock a world of savings and surprises.</Text>
+                        <Text style={{color:  colorScheme === "dark" ? Colors.dark.text : Colors.light.text, width: '90%', textAlign: 'center', fontSize: 18, fontFamily:'Montserrat_500Medium',}}>Enjoy exclusive discounts, access to new arrivals, and personalized recommendations. Sign up today to unlock a world of savings and surprises.</Text>
                         
                         <View
                         style={{
                             width: 80,
                             height: 80,
                             borderRadius: 40,
-                            backgroundColor: '#fff',
+                            backgroundColor: colorScheme === "dark" ? Colors.dark.background: Colors.light.background,
                             borderColor: '#F8991E',
                             justifyContent: 'center',
                             alignItems: 'center',

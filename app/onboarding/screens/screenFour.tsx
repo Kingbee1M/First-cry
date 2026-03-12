@@ -1,7 +1,7 @@
 import ButtonUI from "@/components/ui/ButtonUi";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme.web";
-import { setHasSeen } from "@/store/onboardingSlice";
+import { setHasSeen } from "@/shared/store/onboardingSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { Image, Text, View } from "react-native";
@@ -22,6 +22,11 @@ const finishOnboarding = async () => {
   dispatch(setHasSeen(true)); // update Redux
     router.replace('/(tabs)'); // navigate to main app
 }
+const finishOnboardingSignIn = async () => {
+  await AsyncStorage.setItem("hasSeenOnboarding", "true"); // persist
+  dispatch(setHasSeen(true));
+    router.replace('/auth/login');
+}
 
     return (
         <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center',}}>
@@ -33,7 +38,7 @@ const finishOnboarding = async () => {
                         
                         <View style={{width: '100%', alignItems: 'center', gap: 20}}>
                             <ButtonUI title="Get Started" onPress={() => finishOnboarding()}/>
-                            <ButtonUI title="Get Started" variant="outline" onPress={() => finishOnboarding()}/>
+                            <ButtonUI title="Sign In" variant="outline" onPress={() => finishOnboardingSignIn()}/>
                         </View>
                     </View>
                     

@@ -1,6 +1,7 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
-import { Image, Text, TouchableOpacity, View, useColorScheme } from "react-native";
+import { useColorScheme } from "@/hooks/use-color-scheme.web";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 type Props = {
     next: () => void;
@@ -21,7 +22,7 @@ export default function Screen1({ next }: Props) {
                     width: 80,
                     height: 80,
                     borderRadius: 40,
-                    backgroundColor: '#fff',
+                    backgroundColor: colorScheme === "dark" ? Colors.dark.background: Colors.light.background,
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 20,

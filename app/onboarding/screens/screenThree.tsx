@@ -21,7 +21,7 @@ export default function ScreenThree({ next }: Props) {
                         style={{
                             width: 80,
                             height: 80,
-                            backgroundColor: '#fff',
+                            backgroundColor: colorScheme === "dark" ? Colors.dark.background: Colors.light.background,
                             justifyContent: 'center',
                             alignItems: 'center',
                             marginTop: 20,

@@ -1,40 +1,69 @@
 // RootLayout.tsx
-import { setHasSeen } from "@/store/onboardingSlice";
-import { store } from "@/store/store";
+import { store } from '@/shared/store/store';
+import { Montserrat_500Medium, Montserrat_600SemiBold, Montserrat_700Bold, useFonts } from '@expo-google-fonts/montserrat';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Provider, useDispatch } from "react-redux";
+import Toast from "react-native-toast-message";
+import { Provider } from "react-redux";
+
 
 function AppContent() {
-  
-  const dispatch = useDispatch();
+  const router = useRouter();
+
   const [checked, setChecked] = useState(false);
-  const [hasSeen, setHasSeenState] = useState(false);
+  const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const [fontsLoaded] = useFonts({
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
+    Montserrat_700Bold
+  })
 
   useEffect(() => {
-    const loadOnboardingState = async () => {
-      const value = await AsyncStorage.getItem("hasSeenOnboarding");
-      const seen = value === "true";
-      
-      dispatch(setHasSeen(seen));  // update Redux state
-      setHasSeenState(seen);       // update local state for layout decision
+    const checkAppState = async () => {
+      const onboarding = await AsyncStorage.getItem("hasSeenOnboarding");
+      const token = await AsyncStorage.getItem("authKey");
+
+      setHasSeenOnboarding(onboarding === "true");
+      setIsAuthenticated(!!token);
+
       setChecked(true);
     };
 
-    loadOnboardingState();
-  }, [dispatch]);
+    checkAppState();
+  }, []);
 
-  if (!checked) return null; // wait until AsyncStorage is read
+  useEffect(() => {
+    if (!checked) return;
+
+    if (!hasSeenOnboarding) {
+      router.replace("/onboarding");
+      return;
+    }
+
+    if (!isAuthenticated) {
+      router.replace("/auth/login");
+      return;
+    }
+
+    router.replace("/(tabs)");
+  }, [checked, hasSeenOnboarding, isAuthenticated, router]);
+
+  
+
+  if (!fontsLoaded || !checked) {
+    return null;
+  }
+
 
   return (
-    <Stack>
-      {!hasSeen ? (
-        <Stack.Screen name="onboarding/index" options={{ headerShown: false }} />
-      ) : (
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      )}
-    </Stack>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    />
   );
 }
 
@@ -42,6 +71,7 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <AppContent />
+      <Toast />
     </Provider>
   );
 }
